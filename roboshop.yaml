@@ -6,6 +6,7 @@
     ami_id: "ami-0220d79f3f480ecf5"
     domain_name: "manojmantha.online"
     env: dev
+    action: "create"
     instances:
     - mongodb
     - catalogue
@@ -59,4 +60,14 @@
     - action == "create"
     
 
+# Destroy 
 
+- name: delete r53 records
+  amazon.aws.route53:
+    state: absent
+    zone: "{{ domain_name }}"
+    record: "{{ item }}-{{ env }}.{{ domain_name }}"
+    type: A
+    ttl: 1
+  loop: "{{ instances }}"
+  when: action == "destroy"
