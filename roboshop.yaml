@@ -24,7 +24,6 @@
         Component: "{{ item }}"
         Environment: "{{ env }}"
         Name: "{{ item }}-{{ env }}"
-      wait: false
     loop: "{{ instances }}"
     register: ec2_output
     when: action == "create"
