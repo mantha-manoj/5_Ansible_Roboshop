@@ -28,6 +28,11 @@
       path: /app
       state: directory
 
+  - name: delete catalogue zip file
+    ansible.builtin.file:
+      path: /tmp/catalogue.zip
+      state: absent
+
   - name: download catalogue code
     ansible.builtin.get_url:
       url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
@@ -38,3 +43,30 @@
       src: /tmp/catalogue.zip
       dest: /app
       remote_src: yes
+
+  - name: install dependencies
+    community.general.npm:
+      path: /app
+
+  - name: copy catalogue service
+    ansible.builtin.copy:
+      src: catalogue.service
+      dest: /etc/systemd/system/catalogue.service
+
+  - name: copy mongo repo
+    ansible.builtin.copy:
+      src: mongo.repo
+      dest: /etc/yum.repos.d/mongo.repo
+
+  - name: install mongodb client
+    ansible.builtin.dnf:
+      name: mongodb-mongosh
+      state: present
+
+  - name: check products loaded
+    ansible.builtin.command: mongosh --host "{{ MONGODB_HOST }}" --quiet  --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
+    register: catalogue_output
+
+  - name: print the catalogue_output
+    ansible.builtin.debug:
+      msg: "{{ catalogue_output }}"
