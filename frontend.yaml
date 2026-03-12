@@ -44,5 +44,5 @@
   - name: start the nginx
     ansible.builtin.dnf:
       name: nginx
-      state: restarted
+      state: started
       enabled: yes 
