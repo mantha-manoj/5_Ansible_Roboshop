@@ -23,7 +23,7 @@
       line: 'protected-mode no'
 
   - name: start and enable redis
-    ansible.builtin.dnf:
+    ansible.builtin.service: 
       name: redis
       state: restarted
       enabled: yes
