@@ -4,7 +4,7 @@
   hosts: all
   connection: local
   vars:
-    sg_id: "sg-06a88459d3ec296d6"
+    sg_id: "sg-06c3546d4c1ab5fcf"
     ami_id: "ami-0220d79f3f480ecf5"
     domain_name: "manojmantha.online"
     env: dev
